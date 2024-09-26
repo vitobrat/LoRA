@@ -8,12 +8,21 @@ task = Task.init(
     task_type=Task.TaskTypes.training
 )
 
+task.set_base_task(
+    base_task_id=None,
+    script="examples/text_to_image/run_lora_train.py",  # Относительный путь к скрипту
+    repo="https://github.com/vitobrat/LoRA",  # Укажи здесь ссылку на твой репозиторий
+    branch="main",  # Опционально: укажи ветку
+    commit="latest",  # Опционально: можешь указать конкретный commit hash или оставить "latest"
+)
+
+
 # Указываем очередь для выполнения на сервере
 task.execute_remotely(queue_name="default", exit_process=True)
 
 # Команда для запуска скрипта
 command = [
-    "accelerate", "launch", "--mixed_precision=fp16", "train_text_to_image_lora.py",
+    "accelerate", "launch", "--mixed_precision=fp16", "examples/text_to_image/train_text_to_image_lora.py",
     "--pretrained_model_name_or_path=CompVis/stable-diffusion-v1-4",
     "--dataset_name=lambdalabs/naruto-blip-captions",
     "--caption_column=text",
