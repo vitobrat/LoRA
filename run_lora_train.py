@@ -1,16 +1,6 @@
 from clearml import Task
 import subprocess
 
-# Создаём задачу в ClearML
-task = Task.init(
-    project_name="LoRA Stable Diffusion",
-    task_name="Training Naruto Model",
-    task_type=Task.TaskTypes.training
-)
-
-# Указываем очередь для выполнения на сервере
-task.execute_remotely(queue_name="default", exit_process=True)
-
 # Команда для запуска скрипта
 command = [
     "accelerate", "launch", "--mixed_precision=fp16", "train_text_to_image_lora.py",
@@ -31,7 +21,14 @@ command = [
     "--report_to=wandb"
 ]
 
+# Установить accelerate
+subprocess.run(["pip", "install", "accelerate"])
+
+# Дальнейший запуск твоего скрипта
+
+
 # Запуск команды в процессе
 subprocess.run(command, check=True)
 
 
+# clearml-task --project LoRA_Training --name Training_LoRA --script run_lora_train.py --requirements requirements.txt --queue default
